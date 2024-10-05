@@ -1,12 +1,14 @@
 import fs from 'fs';
 import https from 'https';
 import express from 'express';
+import path from 'path';
 
 const app = express();
+const keysDir = path.join(path.dirname(new URL(import.meta.url).pathname), 'keys');
 
 try {
-    const privateKey = fs.readFileSync('./keys/privateKey.pem');  // Updated path
-    const certificate = fs.readFileSync('./keys/certificate.pem'); // Updated path
+    const privateKey = fs.readFileSync(path.join(keysDir, 'privateKey.pem'));  
+    const certificate = fs.readFileSync(path.join(keysDir, 'certificate.pem')); 
 
     const options = {
         key: privateKey,
