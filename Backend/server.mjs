@@ -1,43 +1,43 @@
 import https from "https";
-import http from "http";
-import express from "express";
 import fs from "fs";
+import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
 
-// Constants
-const PORT = 3000;
-const HOST = 'localhost';  // You can also use an IP address or a domain
+const PORT = 3001;
 const app = express();
 
-// Get the correct directory paths for the keys folder
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const keysDir = path.join(__dirname, 'keys');
-
-// SSL options - ensure paths are correctly resolved
+// SSL options
 const options = {
-  key: fs.readFileSync(path.join(keysDir, 'privateKey.pem')),
-  cert: fs.readFileSync(path.join(keysDir, 'certificate.pem'))
+    key: fs.readFileSync('keys/privateKey.pem'),
+    cert: fs.readFileSync('keys/certificate.pem')
 };
 
-// Middleware
-app.use(cors());
+// Enable CORS to allow requests from your frontend
+app.use(cors({
+    origin: 'http://localhost:3000',  // Allow requests from your frontend
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
-// Allow CORS globally
+// Allow CORS globally for all requests
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', '*');
-  res.setHeader('Access-Control-Allow-Methods', '*');
-  next();
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    next();
+});
+
+// Define a basic route to check server status
+app.get('/', (req, res) => {
+    res.send('Welcome to the Bank Server');
 });
 
 // Create HTTPS server
 let server = https.createServer(options, app);
 
-// Log the full URL
-server.listen(PORT, HOST, () => {
-  console.log(`Server is running at https://${HOST}:${PORT}`);
+// Start the server
+server.listen(PORT, () => {
+    console.log(`Server is running on https://localhost:${PORT}`);
 });
