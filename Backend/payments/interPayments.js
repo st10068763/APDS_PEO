@@ -8,13 +8,11 @@ app.use(cors());
 app.use(express.json());
 
 // Route to handle international payments
-app.post('/api/payments/interPayments', (req, res) => {
+app.post('/api/payments/international', (req, res) => {
     const paymentData = req.body;
-    // Handle the payment processing logic here
-    // Example: Validate data, connect to SWIFT API, etc.
     console.log('Processing international payment:', paymentData);
-    
-    // Send success response (mock)
+
+    // Mock logic for international payment processing
     res.status(200).json({ message: 'Payment processed successfully', paymentData });
 });
 
