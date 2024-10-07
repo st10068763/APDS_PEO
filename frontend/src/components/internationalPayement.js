@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+// importing the App.css file
+import '../App.css';
 
 const PaymentForm = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ const PaymentForm = () => {
     };    
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="payment-form">
             <div>
                 <h2>International Payment Form</h2>
             </div>
